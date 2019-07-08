@@ -1,0 +1,13 @@
+package local.database.koreandictionary;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class ttest extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ttest);
+    }
+}
