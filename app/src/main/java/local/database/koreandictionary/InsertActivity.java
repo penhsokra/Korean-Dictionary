@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,13 +23,13 @@ public class InsertActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         iptKorean = findViewById(R.id.iptKorean);
         iptEnglish = findViewById(R.id.iptenglish);
         iptKhmer = findViewById(R.id.iptkhmer);
         iptExample = findViewById(R.id.iptexample);
         btnSave = findViewById(R.id.btnInsert);
-
         btnSave.setOnClickListener(v->{
             insertWord();
         });
@@ -66,7 +67,6 @@ public class InsertActivity extends AppCompatActivity {
                 word.setEnglish(english);
                 word.setKhmer(khmer);
                 word.setExample(example);
-
                 WordDatabase.getInstance(getApplicationContext()).wordDao().insert(word);
                 return null;
             }
@@ -74,9 +74,14 @@ public class InsertActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                finish();
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                Toast.makeText(InsertActivity.this, "Saved"+example, Toast.LENGTH_SHORT).show();
+                //finish();
+                //Intent intent = ;
+                Toast.makeText(InsertActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                iptKorean.requestFocus();
+                iptKorean.setText("");
+                iptEnglish.setText("");
+                iptKhmer.setText("");
+                iptExample.setText("");
             }
         }
 

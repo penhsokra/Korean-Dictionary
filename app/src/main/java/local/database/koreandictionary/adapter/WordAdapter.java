@@ -23,14 +23,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     private AppCompatActivity context;
     private List<Word> wordList;
     private CurrentPosition currentPosition;
-    private static int position;
     private static final int EDIT_REQUEST_CODE=111;
 
-    public WordAdapter(AppCompatActivity context, List<Word> wordList, CurrentPosition currentPosition, int position) {
+    public WordAdapter(AppCompatActivity context, List<Word> wordList) {
         this.context = context;
         this.wordList = wordList;
         this.currentPosition = (CurrentPosition) context;
-        this.position = position;
     }
 
     @NonNull
@@ -58,10 +56,13 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.btnDelete:
-                                Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show();
+                                currentPosition.CurrentPosition(viewHolder.getAdapterPosition(),word);
                                 return true;
-                            case R.id.btnEdite:
-                                Toast.makeText(context, "Edit", Toast.LENGTH_SHORT).show();
+                            case R.id.btnEdit:
+                                Word word = wordList.get(viewHolder.getAdapterPosition());
+                                Intent intent = new Intent(viewHolder.itemView.getContext(), UpdateActivity.class);
+                                intent.putExtra("word",word);
+                                context.startActivity(intent);
                                 return true;
                             default:return false;
                         }
@@ -96,6 +97,12 @@ public class WordAdapter extends RecyclerView.Adapter<WordAdapter.ViewHolder> {
     }
 
     public static interface CurrentPosition{
-        void CurrentPosition(int position);
+        void CurrentPosition(int position,Word word);
+    }
+
+    public void addMoreItem(List<Word> books){
+        int previousSize = getItemCount();
+        this.wordList.addAll(books);
+        notifyItemRangeInserted(previousSize-1,this.wordList.size());
     }
 }
