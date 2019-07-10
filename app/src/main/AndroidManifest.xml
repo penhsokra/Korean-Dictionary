@@ -20,7 +20,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>
         </activity>
-        <activity android:label="Insert new Word" android:name=".InsertActivity" android:windowSoftInputMode="adjustResize">
+        <activity android:label="Insert new word" android:name=".InsertActivity" android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity"/>

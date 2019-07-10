@@ -13,6 +13,14 @@ public class Word implements Serializable{
     private String english;
     private String khmer;
     private String example;
+    public Word(){}
+    public Word(int id, String korean, String english, String khmer, String example) {
+        this.id = id;
+        this.korean = korean;
+        this.english = english;
+        this.khmer = khmer;
+        this.example = example;
+    }
 
     public int getId() {
         return id;
@@ -52,5 +60,16 @@ public class Word implements Serializable{
 
     public void setExample(String example) {
         this.example = example;
+    }
+
+    @Override
+    public String toString() {
+        return "Word{" +
+                "id=" + id +
+                ", korean='" + korean + '\'' +
+                ", english='" + english + '\'' +
+                ", khmer='" + khmer + '\'' +
+                ", example='" + example + '\'' +
+                '}';
     }
 }

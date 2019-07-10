@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.IDNA;
 import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -38,15 +40,20 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.Curre
     WordDatabase wordDatabase;
     WordAdapter wordAdapter;
     private List<Word> wordList = new ArrayList<>();
+    Word words;
     private int position;
+    private TextView notFound,getNotFound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        notFound = findViewById(R.id.notFound);
+        getNotFound = findViewById(R.id.notFoundWord);
         btnGotoadd = findViewById(R.id.btnGotoAdd);
+        notFound.setVisibility(View.GONE);
         btnGotoadd.setOnClickListener(v->{
             Intent intent = new Intent(this,InsertActivity.class);
+            intent.putExtra("getWord",""+getNotFound.getText().toString());
             startActivity(intent);
         });
 
@@ -54,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.Curre
         intiUI();
         getResult();
 
+        Log.e("00000",""+wordList);
     }
 
     private void intiUI(){
@@ -80,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.Curre
             public void onClick(DialogInterface dialog, int which) {
                try {
                    WordDatabase.getInstance(getApplicationContext()).wordDao().delete(word);
+                   wordList.remove(word);
+                   wordAdapter.notifyItemRemoved(position);
                }catch (Exception e) {
                    Log.e("000000",e.toString());
                }
@@ -112,19 +122,34 @@ public class MainActivity extends AppCompatActivity implements WordAdapter.Curre
             @Override
             public boolean onQueryTextChange(String s) {
                 doSearch(s);
-                return false;
+                return true;
             }
         });
         return true;
     }
 
+    List<Word> newWord = new ArrayList<>();
     private void doSearch(String s){
+        newWord = wordDatabase.wordDao().getallWord();
         s = s.toLowerCase();
         if(s.isEmpty()){
-            Toast.makeText(this, "0", Toast.LENGTH_SHORT).show();
-
+            getNotFound.setText("");
+            notFound.setVisibility(View.GONE);
+            wordList.addAll(newWord);
         }
-
+        wordList.clear();
+        for (Word word : newWord){
+            if (word.getKorean().contains(s)){
+                getNotFound.setText("");
+                notFound.setVisibility(View.GONE);
+                wordList.add(word);
+            }
+        }
+        if (wordList.size() == 0){
+            getNotFound.setText(s.toString());
+            notFound.setVisibility(View.VISIBLE);
+            wordAdapter.notifyDataSetChanged();
+        }
         wordAdapter.notifyDataSetChanged();
     }
 }

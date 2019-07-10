@@ -15,17 +15,6 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        /*
-        // my_child_toolbar is defined in the layout file
-        Toolbar myChildToolbar = (Toolbar) findViewById(R.id.my_child_toolbar);
-        setSupportActionBar(myChildToolbar);
-        // Get a support ActionBar corresponding to this toolbar
-        ActionBar ab = getSupportActionBar();
-
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
-        */
-
         korean = findViewById(R.id.dKorean);
         english = findViewById(R.id.dEnglish);
         khmer = findViewById(R.id.dKhmer);
